@@ -41,8 +41,10 @@ unit SysUtils;
   {.$DEFINE SB}     // TStringBuilder
   {.$DEFINE ENC}    // TEncoding
   {.$DEFINE CHAR}   // use Character unit, enable IsValidIdent function
-  
-  
+  {$DEFINE FMTSET} // GetFormatSettings in init section. Adds ~7 kB but conversion routines
+                    // (and Format too) needs this values to work properly. You may use
+                    // thread-safe analog with record got from GetLocaleFormatSettings but
+                    // it adds ~5 kB anyway.
   
 {$ENDIF}
 
@@ -23442,11 +23444,11 @@ end;
 {$ENDIF}
 
 {$ENDREGION}
-(*
+
 initialization
   if ModuleIsCpp then HexDisplayPrefix := '0x';
-  InitMonitorSupport;
-  AddModuleUnloadProc(ModuleUnloaded);
+//  InitMonitorSupport;
+//  AddModuleUnloadProc(ModuleUnloaded);
 
 {$IFDEF LINUX}
   SafeCallErrorProc := @SafeCallError;
@@ -23458,20 +23460,23 @@ initialization
 {$IFDEF MSWINDOWS}
   InitPlatformId;
   InitDriveSpacePtr;
-  DefaultFallbackLanguages := GetLocaleOverride('');
+//  DefaultFallbackLanguages := GetLocaleOverride('');
 {$ENDIF}
+
+{$IFDEF FMTSET}
   GetFormatSettings; { Win implementation uses platform id }
+{$ENDIF}
 
 finalization
-(*{$IFDEF LINUX}
+{$IFDEF LINUX}
   if libuuidHandle <> nil then
     dlclose(libuuidHandle);
 {$ENDIF}
-  RemoveModuleUnloadProc(ModuleUnloaded);
-  ClearHashTables;
+//  RemoveModuleUnloadProc(ModuleUnloaded);
+//  ClearHashTables;
   FreeTerminateProcs;
-  DoneMonitorSupport;
-*)
+//  DoneMonitorSupport;
+
 end.
 
 
