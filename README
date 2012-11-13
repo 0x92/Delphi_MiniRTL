@@ -1,0 +1,8 @@
+Modified versions of some Delphi 2010 RTL units which could reduce your binary size.
+Main reduction is for non-VCL projects which use Classes unit: -150 kB!
+
+Carefully read notes in units' headers!
+
+To use this modified units you'll need to add path to them to the Project options => Delphi compiler => Search path. If you use units which use some MiniRTL units you'll have to copy them into MiniRTL folder.
+
+Other Delphi versions not included, sorry.
